@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2026-07-21 16:11:21",
+    "caller_name": "Jane Smith",
+    "message": "Need to discuss project",
+    "callback_number": "+15551234567",
+    "status": "unread"
+  },
+  {
+    "id": 2,
+    "timestamp": "2026-07-21 16:23:58",
+    "caller_name": "John",
+    "message": "Please call back to discuss their inquiry",
+    "callback_number": "unknown",
+    "status": "unread"
+  },
+  {
+    "id": 3,
+    "timestamp": "2026-07-21 16:24:07",
+    "caller_name": "unknown",
+    "message": "Pricing inquiry, please call back to discuss",
+    "callback_number": "unknown",
+    "status": "unread"
+  },
+  {
+    "id": 4,
+    "timestamp": "2026-07-21 16:24:21",
+    "caller_name": "unknown",
+    "message": "Tooth hurts, please call back to discuss",
+    "callback_number": "unknown",
+    "status": "unread"
+  }
+]
