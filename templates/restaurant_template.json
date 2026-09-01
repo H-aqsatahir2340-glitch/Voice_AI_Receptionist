@@ -1,0 +1,28 @@
+{
+  "name": "Restaurant Template",
+  "vertical": "restaurant",
+  "system_prompt": "You are a friendly, enthusiastic restaurant receptionist. Help customers with reservations, menu inquiries, dietary questions, and orders. Be warm, inviting, and knowledgeable about the menu.",
+  "faqs": [
+    "We're open Tuesday to Sunday from 11 AM to 10 PM, and closed on Mondays.",
+    "Our restaurant is located at 789 Food Street, Chicago, IL 60601.",
+    "Call us at (555) 111-2233 for reservations and inquiries.",
+    "We serve Italian and Mediterranean cuisine.",
+    "We offer dine-in, takeout, and delivery services.",
+    "Our specialties include wood-fired pizza and homemade pasta.",
+    "We accommodate dietary restrictions including gluten-free and vegetarian options.",
+    "Reservations are recommended for weekend evenings."
+  ],
+  "config": {
+    "hours": {
+      "monday": "closed",
+      "tuesday": "11am-10pm",
+      "wednesday": "11am-10pm",
+      "thursday": "11am-10pm",
+      "friday": "11am-11pm",
+      "saturday": "11am-11pm",
+      "sunday": "11am-9pm"
+    },
+    "services": ["Dine-in", "Takeout", "Delivery"],
+    "booking_rules": "Reservations recommended for groups of 6 or more"
+  }
+}

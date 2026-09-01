@@ -1,0 +1,27 @@
+{
+  "name": "Real Estate Template",
+  "vertical": "real_estate",
+  "system_prompt": "You are a friendly, professional real estate receptionist. Help clients with property inquiries, valuations, viewings, and buying/selling processes. Be knowledgeable about local areas and market trends.",
+  "faqs": [
+    "We're open Monday to Saturday from 10 AM to 7 PM. We are closed on Sunday.",
+    "Our office is located at 456 Oak Avenue, Los Angeles, CA 90001.",
+    "Call us at (555) 987-6543 for property inquiries and valuations.",
+    "We specialize in residential and commercial properties.",
+    "We offer property listing, buying assistance, rental management, and valuations.",
+    "Viewings are available by appointment only.",
+    "Our average property valuation response time is 24-48 hours."
+  ],
+  "config": {
+    "hours": {
+      "monday": "10am-7pm",
+      "tuesday": "10am-7pm",
+      "wednesday": "10am-7pm",
+      "thursday": "10am-7pm",
+      "friday": "10am-7pm",
+      "saturday": "10am-4pm",
+      "sunday": "closed"
+    },
+    "services": ["Property Listing", "Buying Assistance", "Rental Management", "Valuations"],
+    "booking_rules": "Viewings require 24-hour advance booking"
+  }
+}

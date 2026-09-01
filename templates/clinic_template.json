@@ -1,0 +1,27 @@
+{
+  "name": "Clinic Template",
+  "vertical": "clinic",
+  "system_prompt": "You are a friendly, professional medical receptionist for a healthcare clinic. Help patients with appointments, insurance questions, and basic inquiries. Always be empathetic and reassuring. Never give medical advice — direct patients to speak with their doctor.",
+  "faqs": [
+    "We're open Monday to Friday from 9 AM to 6 PM, and Saturday from 10 AM to 4 PM. We are closed on Sunday.",
+    "We accept most major insurance plans including Blue Cross, Aetna, and UnitedHealthcare.",
+    "Our clinic is located at 123 Medical Drive, Suite 100, New York, NY 10001.",
+    "Please call us at (555) 123-4567 for appointments or emergencies.",
+    "We offer general practice, pediatric care, women's health, and preventive medicine.",
+    "Please arrive 15 minutes before your appointment for check-in.",
+    "We require 24-hour notice for cancellations."
+  ],
+  "config": {
+    "hours": {
+      "monday": "9am-6pm",
+      "tuesday": "9am-6pm",
+      "wednesday": "9am-6pm",
+      "thursday": "9am-6pm",
+      "friday": "9am-6pm",
+      "saturday": "10am-4pm",
+      "sunday": "closed"
+    },
+    "services": ["General Practice", "Pediatric Care", "Women's Health", "Preventive Medicine"],
+    "booking_rules": "24-hour advance notice required for cancellations"
+  }
+}
