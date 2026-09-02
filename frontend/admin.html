@@ -1208,7 +1208,7 @@ TAB: KNOWLEDGE (Enhanced with Batch Upload)
             <div style="max-width:900px;">
                 <div class="form-group">
                     <label>Select Tenant</label>
-                    <select id="configTenantSelect" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:10px; font-size:14px; background:#f8fafc;">
+                    <select id="configTenantSelect" onchange="loadConfigForTenant()" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:10px; font-size:14px; background:#f8fafc;">
                         <option value="">Select a tenant...</option>
                     </select>
                 </div>
@@ -1230,8 +1230,8 @@ TAB: KNOWLEDGE (Enhanced with Batch Upload)
                         </div>
                         <br />
                         <div class="form-group">
-                            <label>Booking Rules</label>
-                            <input type="text" id="configBookingRules" placeholder="e.g., 24-hour notice required" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:10px; font-size:14px;" />
+                            <label>Advance notice required (hours)</label>
+                            <input type="number" id="configAdvanceNotice" min="0" placeholder="e.g., 24" style="width:100%; padding:10px 14px; border:1px solid #e2e8f0; border-radius:10px; font-size:14px;" />
                         </div>
                         <button class="btn btn-primary btn-block" onclick="saveUserConfig()"><i class="fas fa-save"></i> Save Configuration</button>
                         <div id="configResult" style="margin-top:16px; padding:12px; background:#f8fafc; border-radius:10px; font-family:monospace; font-size:13px;"></div>
@@ -1833,6 +1833,7 @@ function switchTab(tabName) {
     }
     if (tabName === 'leads') refreshLeads();
     if (tabName === 'knowledge') loadKnowledgeForTenant();
+    if (tabName === 'config') loadConfigForTenant();
 }
         // ──────────────────────────────────────────────────────────────
         // LEADS
@@ -2145,7 +2146,7 @@ async function processBatchKnowledge() {
             if (!tenantId) {
                 document.getElementById('configHoursContainer').innerHTML = '<p style="color:#94a3b8;">Select a tenant first</p>';
                 document.getElementById('configServicesList').innerHTML = '';
-                document.getElementById('configBookingRules').value = '';
+                document.getElementById('configAdvanceNotice').value = '';
                 return;
             }
             let hoursHtml = '';
@@ -2174,8 +2175,13 @@ async function processBatchKnowledge() {
                     const data = await res.json();
                     if (data.hours) {
                         days.forEach(day => {
-                            if (data.hours[day]) {
-                                const parts = data.hours[day].split('-');
+                            const dayValue = data.hours[day];
+                            // FIX: "closed" is a truthy string, so the old code
+                            // (`if (data.hours[day])`) never unchecked the "Open"
+                            // box for a closed day — it just silently kept the
+                            // default 9am-6pm values with the box checked.
+                            if (dayValue && dayValue.trim().toLowerCase() !== 'closed') {
+                                const parts = dayValue.split('-');
                                 if (parts.length === 2) {
                                     document.getElementById(`configTime_${day}`).value = parts[0].trim();
                                     document.getElementById(`configTimeEnd_${day}`).value = parts[1].trim();
@@ -2190,8 +2196,16 @@ async function processBatchKnowledge() {
                         configServices = Array.isArray(data.services) ? data.services : [];
                         renderConfigServices();
                     }
-                    if (data.booking_rules && data.booking_rules.advance_notice) {
-                        document.getElementById('configBookingRules').value = `${data.booking_rules.advance_notice}-hour notice required`;
+                    // FIX: booking_rules is stored as a dict ({"advance_notice": 24})
+                    // by every other code path (tenant_resolver.py, admin.py's manual
+                    // create endpoint) — the old free-text field ("e.g., 24-hour notice
+                    // required") required parsing a sentence back out with a regex,
+                    // which was fragile and didn't round-trip cleanly. Now a plain
+                    // number field mapped directly to booking_rules.advance_notice.
+                    if (data.booking_rules && typeof data.booking_rules === 'object' && data.booking_rules.advance_notice != null) {
+                        document.getElementById('configAdvanceNotice').value = data.booking_rules.advance_notice;
+                    } else {
+                        document.getElementById('configAdvanceNotice').value = '';
                     }
                 }
             } catch (e) { console.error('Error loading config:', e); }
@@ -2240,10 +2254,9 @@ async function processBatchKnowledge() {
             });
 
             const bookingRules = {};
-            const rulesText = document.getElementById('configBookingRules').value;
-            if (rulesText) {
-                const match = rulesText.match(/(\d+)/);
-                if (match) bookingRules.advance_notice = parseInt(match[1]);
+            const noticeValue = document.getElementById('configAdvanceNotice').value;
+            if (noticeValue !== '') {
+                bookingRules.advance_notice = parseInt(noticeValue, 10);
             }
 
             const config = { hours, services: configServices, booking_rules: bookingRules };
